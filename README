@@ -1,0 +1,7 @@
+This is a script to create a HTML diff view from two IPython notebooks.
+
+## Usage
+
+    $ ./diffipynb old.ipynb new.ipynb
+
+Open the file `diff.html` with you default browser.

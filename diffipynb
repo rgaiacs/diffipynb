@@ -1,0 +1,32 @@
+#!/usr/bin/python
+
+import sys
+import os.path
+import subprocess
+from lxml import html
+from lxml import etree
+from lxml.html.diff import htmldiff
+
+def diff(old, new):
+    with open(old, 'r') as f:
+        doc1 = html.parse(f)
+
+    with open(new, 'r') as f:
+        doc2 = html.parse(f)
+
+    doc1 = doc1.find('body')
+    doc2 = doc2.find('body')
+
+    s = htmldiff(html.tostring(doc1).decode(),html.tostring(doc2).decode())
+
+    with open('diff.html', 'w') as f:
+        f.write(s)
+
+if __name__ == '__main__':
+    subprocess.check_call(['ipython', 'nbconvert', '--to', 'html', sys.argv[1]])
+    subprocess.check_call(['ipython', 'nbconvert', '--to', 'html', sys.argv[2]])
+
+    old = os.path.basename(sys.argv[1]).replace('ipynb', 'html')
+    new = os.path.basename(sys.argv[2]).replace('ipynb', 'html')
+    diff(old, new)
+
